@@ -50,12 +50,29 @@ class FreightRecommendationService:
 
         # Based on Philippine logistics standards, we can assume:
 
-        # These thresholds are arbitrary and should be adjusted based on real-world data
-        if volume_cubic_m > 55: # ~80% of a 40ft container
+        FCL_WEIGHT_THRESHOLD = 18000 # 18 kg (80% of a 20ft container has a max weight of `21,700 kg`)
+        LCL_WEIGHT_THRESHOLD = 5000 # 5 kg (typical consolidation threshold)
+
+        FCL_VOLUME_THRESHOLD = 55 # 55 cubic meters (80% of a 40ft container)
+        LCL_VOLUME_THRESHOLD = 15 # 15 cubic meters (good volume but not enough for FCL)
+
+        # Identify if the cargo is "heavy" or "light" for its size
+        weight_density = weight_kg / volume_cubic_m if volume_cubic_m > 0 else 0
+
+        # Determine load type basing on both weight & volume, 
+        # FCL if either weight or volume justifies a full container
+        if weight_kg > FCL_WEIGHT_THRESHOLD or volume_cubic_m > FCL_VOLUME_THRESHOLD:
             return LoadType.objects.get(code='FCL')
-        elif volume_cubic_m > 15: # Significant volumen but not enough for FCL 
+        
+        # LCL if they have a moderate weight or volume, 
+        elif weight_kg > LCL_WEIGHT_THRESHOLD or volume_cubic_m > LCL_VOLUME_THRESHOLD:
             return LoadType.objects.get(code='LCL')
+
+        # LTL for small shipments through both measures
         else: 
+            # Special case: if extremely dense / heavy for small volume, still use LCL 
+            if weight_density > 500: # Already a very dense cargo more than 500 kg per cubic meter
+                return LoadType.objects.get(code='LCL') 
             return LoadType.objects.get(code='LTL')
     
     @staticmethod
