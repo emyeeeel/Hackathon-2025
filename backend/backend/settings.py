@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework', 
+    'freight_recommender', # For the freight recommmender functionality
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
