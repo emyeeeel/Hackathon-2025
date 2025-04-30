@@ -54,7 +54,7 @@ class FreightRecommendation(models.Model):
     cargo_volume_cubic_m = models.FloatField()
     cargo_category = models.ForeignKey(CargoCategory, on_delete=models.CASCADE)
     recommended_freight_type = models.ForeignKey(FreightType, on_delete=models.CASCADE)
-    recommended_container_type = models.ForeignKey(ContainerType, on_delete=models.CASCADE)
+    recommended_container_type = models.ForeignKey(ContainerType, on_delete=models.CASCADE, null=True, blank=True)
     recommended_load_type = models.ForeignKey(LoadType, on_delete=models.CASCADE)
     additional_notes = models.TextField(blank=True) # e.g. "Best for temperature-sensitive cargo", "Most cost-effective option", etc.
 
