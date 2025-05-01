@@ -1,13 +1,7 @@
 <div class="product-input-container">
     <h2>Product Input</h2>
 
-    <div class="main-button-section">
-        <button class="input-button" (click)="toggleImageInputOptions()">
-            <span class="button-text">Input Product</span>
-        </button>
-    </div>
-
-    <div class="image-input-options" *ngIf="showImageOptions">
+    <div class="image-input-options">
         <h3>Add Product Image</h3>
 
         <div class="option-buttons">
@@ -24,40 +18,64 @@
             </div>
         </div>
 
+        <!-- URL Input Section -->
         <div class="url-input-section" *ngIf="selectedOption === 'url'">
             <div class="input-group">
                 <label for="image-url">Image URL:</label>
                 <input type="text" id="image-url" [(ngModel)]="imageUrl"/>
             </div>
             <button class="submit-button" (click)="submitImageUrl()">Submit URL</button>
+
+            <!-- Progress Bar for URL -->
+            <div class="progress-bar-container" *ngIf="urlUploadProgress > 0">
+                <div class="progress-bar" [style.width.%]="urlUploadProgress"></div>
+                <p class="progress-text">{{ urlUploadProgress }}% loaded</p>
+            </div>
+
+            <!-- Image Preview for URL -->
+            <div class="image-preview" *ngIf="imagePreviewUrl && urlUploadProgress === 100">
+                <h3>Image Preview</h3>
+                <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image"/>
+            </div>
         </div>
 
+        <!-- File Upload Section -->
         <div class="file-upload-section" *ngIf="selectedOption === 'upload'">
             <div class="upload-area" 
                  (dragover)="onDragOver($event)" 
                  (dragleave)="onDragLeave($event)" 
                  (drop)="onDrop($event)"
                  [class.active]="isDragging">
-              <span class="upload-icon">📁</span>
-              <p>Drag & drop an image or click to browse</p>
-              <input 
-                type="file" 
-                id="file-upload" 
-                accept="image/*" 
-                (change)="onFileSelected($event)"
-                #fileInput
-                hidden
-              >
-              <button class="browse-button" (click)="fileInput.click()">Browse Files</button>
+                <p class="upload-text">Drag and Drop file here or <span class="choose-file" (click)="fileInput.click()">Choose file</span></p>
+                <input 
+                  type="file" 
+                  id="file-upload" 
+                  accept="image/*" 
+                  (change)="onFileSelected($event)"
+                  #fileInput
+                  hidden
+                >
             </div>
-            <div class="selected-file" *ngIf="selectedFile">
-              <p>Selected file: {{ selectedFile.name }}</p>
+            <div class="file-info">
+                <p>Supported formats: JPG, PNG, GIF</p>
+                <p>Maximum size: 5MB</p>
+            </div>
+            <div class="progress-bar-container" *ngIf="uploadProgress > 0">
+                <div class="progress-bar-wrapper">
+                    <div 
+                        class="progress-bar" 
+                        [style.width.%]="uploadProgress">
+                        <span class="progress-percentage">{{ uploadProgress }}%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="selected-file" *ngIf="selectedFile && uploadProgress === 100">
+                <p>Selected file: {{ selectedFile.name }}</p>
+            </div>
+            <div class="image-preview" *ngIf="imagePreviewUrl && uploadProgress === 100">
+                <h3>Image Preview</h3>
+                <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image"/>
             </div>
         </div>
-    </div>
-
-    <div class="image-preview" *ngIf="imagePreviewUrl">
-        <h3>Image Preview</h3>
-        <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image"/>
     </div>
 </div>

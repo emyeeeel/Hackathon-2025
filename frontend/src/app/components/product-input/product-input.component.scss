@@ -1,0 +1,192 @@
+// Define the color palette
+$primary-color: #19194b;
+$secondary-color: #1c3f93;
+$accent-color: #eb711b;
+$highlight-color: #d9e11c;
+$text-color: #ffffff;
+$background-color: #f4f4f4;
+
+// General container styling
+.product-input-container {
+  background-color: $background-color;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: 'Arial', sans-serif;
+  color: $primary-color;
+
+  h2 {
+    color: $primary-color;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .image-input-options {
+    background-color: $primary-color;
+    color: $text-color;
+    padding: 15px;
+    border-radius: 8px;
+
+    h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .option-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+
+      .option-button {
+        background-color: $accent-color;
+        color: $text-color;
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: $highlight-color;
+        }
+      }
+    }
+
+    .url-input-section,
+    .file-upload-section {
+      margin-top: 20px;
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+
+        label {
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+
+        input[type='text'] {
+          padding: 10px;
+          border: 1px solid $secondary-color;
+          border-radius: 8px;
+          font-size: 14px;
+        }
+      }
+
+      .submit-button {
+        background-color: $accent-color;
+        color: $text-color;
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: $highlight-color;
+        }
+      }
+    }
+
+    .upload-area {
+      border: 2px dashed #1c3f93; /* Secondary color */
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &.active {
+        background-color: rgba(28, 63, 147, 0.1); /* Light blue background on drag */
+      }
+
+      .upload-text {
+        font-size: 16px;
+        color: #eb711b; /* Primary color */
+        margin: 0;
+
+        .choose-file {
+          color: #eb711b; /* Accent color */
+          font-weight: bold;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .file-info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #1c3f93; /* Secondary color */
+    }
+
+    .selected-file {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #f4f4f4; /* Primary color */
+    }
+  }
+
+  .image-preview {
+    text-align: center; /* Center the preview container horizontally */
+    margin-top: 20px;
+  
+    h3 {
+      color: #19194b; /* Primary color */
+      margin-bottom: 10px;
+    }
+  
+    img {
+      max-width: 300px; /* Set a maximum width for the image */
+      max-height: 300px; /* Set a maximum height for the image */
+      width: auto; /* Maintain aspect ratio */
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 8px; /* Add rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for aesthetics */
+      margin: 0 auto; /* Center the image horizontally */
+      display: block; /* Ensure the image is treated as a block element */
+    }
+  }
+
+  .progress-bar-container {
+    margin-top: 10px;
+    width: 100%;
+    background-color: #f4f4f4; /* Light gray background for contrast */
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+
+    .progress-bar-wrapper {
+      position: relative;
+      height: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #1c3f93; /* Secondary color */
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff; /* White text for contrast */
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+    }
+
+    .progress-percentage {
+      position: absolute;
+      width: 100%;
+      text-align: right;
+      padding-right: 15px;
+      z-index: 1; /* Ensure the text is above the progress bar */
+    }
+  }
+}

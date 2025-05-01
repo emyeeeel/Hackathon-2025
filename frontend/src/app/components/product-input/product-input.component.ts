@@ -1,51 +1,63 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-input',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './product-input.component.html',
-  styleUrl: './product-input.component.scss'
+  styleUrls: ['./product-input.component.scss']
 })
 export class ProductInputComponent {
   @Output() imageSubmitted = new EventEmitter<{ url?: string, file?: File }>();
-
+  
   showImageOptions = false;
-  selectedOption: 'url' | 'upload' | null = null;
-  imageUrl = '';
+  selectedOption: string | null = null;
+  imageUrl: string = '';
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;
   isDragging = false;
+  uploadProgress: number = 0;
+  urlUploadProgress: number = 0; // Progress for URL input
+  isUploadComplete: boolean = false; // New flag to track upload completion
 
-  toggleImageInputOptions() {
-    this.showImageOptions = !this.showImageOptions;
-    if (!this.showImageOptions) {
-      this.resetForm();
-    }
-  }
+  constructor(private http: HttpClient) {}
 
   selectImageOption(option: 'url' | 'upload') {
     this.selectedOption = option;
-    this.imagePreviewUrl = null;
-    this.selectedFile = null;
-    this.imageUrl = '';
+    this.resetProgress();
   }
 
   submitImageUrl() {
-    if (this.imageUrl) {
-      this.imagePreviewUrl = this.imageUrl;
-      this.imageSubmitted.emit({ url: this.imageUrl });
+    if (!this.imageUrl) {
+      alert('Please enter a valid image URL.');
+      return;
     }
+
+    this.urlUploadProgress = 0;
+    this.imagePreviewUrl = null;
+
+    // Simulate URL loading progress
+    const interval = setInterval(() => {
+      if (this.urlUploadProgress < 100) {
+        this.urlUploadProgress += 10; // Increment progress
+      } else {
+        clearInterval(interval);
+        this.imagePreviewUrl = this.imageUrl; // Set the preview URL
+        console.log('URL loading complete');
+      }
+    }, 100); // Simulate loading speed
   }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
       this.selectedFile = input.files[0];
-      this.createImagePreview();
+      this.imagePreviewUrl = URL.createObjectURL(this.selectedFile); // Set preview URL for file
       this.imageSubmitted.emit({ file: this.selectedFile });
+      this.uploadFile(this.selectedFile);
     }
   }
 
@@ -70,8 +82,9 @@ export class ProductInputComponent {
       const file = event.dataTransfer.files[0];
       if (file.type.startsWith('image/')) {
         this.selectedFile = file;
-        this.createImagePreview();
+        this.imagePreviewUrl = URL.createObjectURL(this.selectedFile); // Set preview URL for file
         this.imageSubmitted.emit({ file: this.selectedFile });
+        this.uploadFile(this.selectedFile);
       }
     }
   }
@@ -86,10 +99,37 @@ export class ProductInputComponent {
     }
   }
 
+  uploadFile(file: File) {
+    this.uploadProgress = 0;
+    this.isUploadComplete = false; // Reset the flag when a new upload starts
+    const totalSize = file.size;
+    const chunkSize = totalSize / 100;
+    let uploadedSize = 0;
+
+    const interval = setInterval(() => {
+      if (uploadedSize < totalSize) {
+        uploadedSize += chunkSize;
+        this.uploadProgress = Math.min(Math.round((uploadedSize / totalSize) * 100), 100);
+      } else {
+        clearInterval(interval);
+        console.log('Simulated upload complete');
+        this.uploadProgress = 100;
+        this.isUploadComplete = true; // Set the flag when upload is complete
+      }
+    }, 50);
+  }
+
   resetForm() {
     this.selectedOption = null;
     this.imageUrl = '';
     this.selectedFile = null;
+    this.imagePreviewUrl = null;
+    this.isUploadComplete = false; // Reset the flag when the form is reset
+  }
+
+  resetProgress() {
+    this.uploadProgress = 0;
+    this.urlUploadProgress = 0;
     this.imagePreviewUrl = null;
   }
 }
