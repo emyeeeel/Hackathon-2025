@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product
+from .models import Box, Product
 
 class ProductSerializer(serializers.ModelSerializer):
     total_weight = serializers.ReadOnlyField()  # Read-only field for the calculated property
@@ -11,4 +11,12 @@ class ProductSerializer(serializers.ModelSerializer):
             'width', 'height', 'length', 'weight', 'quantity',
             'is_fragile', 'requires_refrigeration', 'expiration_date',
             'created_at', 'updated_at', 'total_weight'
+        ]
+
+
+class BoxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Box
+        fields = [
+            'id', 'length', 'width', 'height', 'fill_capacity', 'volume'
         ]

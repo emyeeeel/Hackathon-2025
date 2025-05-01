@@ -36,3 +36,15 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_category_display()})"
+    
+
+class Box(models.Model):
+    name = models.CharField(max_length=200)
+    length = models.DecimalField(max_digits=6, decimal_places=2)  # in cm
+    width = models.DecimalField(max_digits=6, decimal_places=2)  # in cm
+    height = models.DecimalField(max_digits=6, decimal_places=2)  # in cm
+    fill_capacity = models.DecimalField(max_digits=6, decimal_places=2)  # in kg
+    volume = models.DecimalField(max_digits=10, decimal_places=2)  # in cm^3
+
+    def __str__(self):
+        return self.name
