@@ -27,4 +27,6 @@ urlpatterns = [
     path('api/', include(router.urls)),  # Add 'api/' prefix here
     path('api/boxes/', views.BoxList.as_view(), name='box-list'),  # Add BoxList view
     path('api/boxes/<int:pk>/', views.BoxDetail.as_view(), name='box-detail'),  # Add BoxDetail view
+    path('api/packed-boxes/', views.PackedBoxList.as_view(), name='packed-box-list'),  # PackedBoxList view
+    path('api/packed-boxes/<int:pk>/', views.PackedBoxDetail.as_view(), name='packed-box-detail'),  # PackedBoxDetail view
 ]
