@@ -1,0 +1,66 @@
+<div class="product-input-container">
+    <h2>Product Input</h2>
+
+    <div class="main-button-section">
+        <button class="input-button" (click)="toggleImageInputOptions()">
+            <span class="button-text">Input Product</span>
+        </button>
+    </div>
+
+    <div class="image-input-options" *ngIf="showImageOptions">
+        <h3>Add Product Image</h3>
+
+        <div class="option-buttons">
+            <div class="option">
+                <button class="option-button url-button" (click)="selectImageOption('url')">
+                    <span class="option-text">Enter Image URL</span>
+                </button>
+            </div>
+
+            <div class="option">
+                <button class="option-button upload-button" (click)="selectImageOption('upload')">
+                    <span class="option-text">Upload Image</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="url-input-section" *ngIf="selectedOption === 'url'">
+            <div class="input-group">
+                <label for="image-url">Image URL:</label>
+                <input type="text" id="image-url" [(ngModel)]="imageUrl"/>
+            </div>
+            <button class="submit-button" (click)="submitImageUrl()">Submit URL</button>
+        </div>
+
+        <div class="file-upload-section" *ngIf="selectedOption === 'upload'">
+            <div class="upload-area" 
+                 (dragover)="onDragOver($event)" 
+                 (dragleave)="onDragLeave($event)" 
+                 (drop)="onDrop($event)"
+                 [class.active]="isDragging">
+              <span class="upload-icon">📁</span>
+              <p>Drag & drop an image or click to browse</p>
+              <input 
+                type="file" 
+                id="file-upload" 
+                accept="image/*" 
+                (change)="onFileSelected($event)"
+                #fileInput
+                hidden
+              >
+              <button class="browse-button" (click)="fileInput.click()">Browse Files</button>
+            </div>
+
+            <div class="selected-file" *ngIf="selectedFile">
+              <p>Selected file: {{ selectedFile.name }}</p>
+              <button class="submit-button" (click)="uploadImage()">Upload Image</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="image-preview" *ngIf="imagePreviewUrl">
+        <h3>Image Preview</h3>
+        <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image"/>
+    </div>
+
+</div>
