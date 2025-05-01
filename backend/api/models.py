@@ -49,3 +49,32 @@ class Box(models.Model):
 
     def __str__(self):
         return self.name
+    
+class PackedBox(models.Model):
+    box = models.ForeignKey(Box, on_delete=models.CASCADE, related_name='packed_boxes')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='packed_boxes')
+    product_quantity = models.PositiveIntegerField(default=1) # Default quantity is 1
+    fill_percent = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)  # in percentage
+    
+    @property
+    def total_weight(self):
+        return self.box.weight + ( self.product.weight * self.quantity)
+    
+    @property
+    def volume_cbm(self):
+        return self.box.volume
+    
+    @property
+    def category_type(self):
+        return self.product.category
+    
+    @property
+    def requires_refrigeration(self):
+        return self.product.requires_refrigeration
+    
+    @property
+    def is_fragile(self):
+        return self.product.is_fragile
+
+    def __str__(self):
+        return f"Box: {self.box.name}, Product: {self.product.name}, Product quantity: {self.product_quantity}, Fill percent: {self.fill_percent}"
