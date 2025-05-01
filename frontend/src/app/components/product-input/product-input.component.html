@@ -22,20 +22,43 @@
         <div class="url-input-section" *ngIf="selectedOption === 'url'">
             <div class="input-group">
                 <label for="image-url">Image URL:</label>
-                <input type="text" id="image-url" [(ngModel)]="imageUrl"/>
+                <input type="text" id="image-url" [(ngModel)]="imageUrl" />
             </div>
             <button class="submit-button" (click)="submitImageUrl()">Submit URL</button>
 
             <!-- Progress Bar for URL -->
             <div class="progress-bar-container" *ngIf="urlUploadProgress > 0">
-                <div class="progress-bar" [style.width.%]="urlUploadProgress"></div>
-                <p class="progress-text">{{ urlUploadProgress }}% loaded</p>
+                <div class="progress-bar-wrapper">
+                    <div 
+                        class="progress-bar" 
+                        [style.width.%]="urlUploadProgress">
+                        <span class="progress-percentage">{{ urlUploadProgress }}%</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Image Preview for URL -->
             <div class="image-preview" *ngIf="imagePreviewUrl && urlUploadProgress === 100">
-                <h3>Image Preview</h3>
-                <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image"/>
+                <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image" />
+            </div>
+
+            <!-- Product Details for URL -->
+            <div class="product-details" *ngIf="identifiedProduct && urlUploadProgress === 100">
+                <h3>Product Details</h3>
+                <div class="product-card">
+                    <p><strong>Name:</strong> {{ identifiedProduct.product?.name }}</p>
+                    <p><strong>Description:</strong> {{ identifiedProduct.product?.description === '' ? 'N/A' : identifiedProduct.product?.description }}</p>
+                    <p><strong>Category:</strong> {{ identifiedProduct.product?.category }}</p>
+                    <p><strong>Subcategory:</strong> {{ identifiedProduct.product?.subcategory }}</p>
+                    <p><strong>Dimensions:</strong> {{ identifiedProduct.product?.width }} x {{ identifiedProduct.product?.height }} x {{ identifiedProduct.product?.length }} cm</p>
+                    <p><strong>Weight:</strong> {{ identifiedProduct.product?.weight }} kg</p>
+                    <p><strong>Quantity:</strong> {{ identifiedProduct.product?.quantity }}</p>
+                    <p><strong>Fragile:</strong> {{ identifiedProduct.product?.is_fragile ? 'Yes' : 'No' }}</p>
+                    <p><strong>Requires Refrigeration:</strong> {{ identifiedProduct.product?.requires_refrigeration ? 'Yes' : 'No' }}</p>
+                </div>
+            </div>
+            <div class="generate-button-container">
+                <button class="generate-button" (click)="onGenerate()" *ngIf="identifiedProduct && urlUploadProgress === 100">Generate</button>
             </div>
         </div>
 
@@ -69,13 +92,28 @@
                     </div>
                 </div>
             </div>
-            <div class="selected-file" *ngIf="selectedFile && uploadProgress === 100">
-                <p>Selected file: {{ selectedFile.name }}</p>
-            </div>
             <div class="image-preview" *ngIf="imagePreviewUrl && uploadProgress === 100">
-                <h3>Image Preview</h3>
-                <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image"/>
+                <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image" />
             </div>
+
+            <!-- Product Details for File Upload -->
+            <div class="product-details" *ngIf="identifiedProduct && uploadProgress === 100">
+                <h3>Product Details</h3>
+                <div class="product-card">
+                    <p><strong>Name:</strong> {{ identifiedProduct.product?.name }}</p>
+                    <p><strong>Description:</strong> {{ identifiedProduct.product?.description === '' ? 'N/A' : identifiedProduct.product?.description }}</p>
+                    <p><strong>Category:</strong> {{ identifiedProduct.product?.category }}</p>
+                    <p><strong>Subcategory:</strong> {{ identifiedProduct.product?.subcategory }}</p>
+                    <p><strong>Dimensions:</strong> {{ identifiedProduct.product?.width }} x {{ identifiedProduct.product?.height }} x {{ identifiedProduct.product?.length }} cm</p>
+                    <p><strong>Weight:</strong> {{ identifiedProduct.product?.weight }} kg</p>
+                    <p><strong>Quantity:</strong> {{ identifiedProduct.product?.quantity }}</p>
+                    <p><strong>Fragile:</strong> {{ identifiedProduct.product?.is_fragile ? 'Yes' : 'No' }}</p>
+                    <p><strong>Requires Refrigeration:</strong> {{ identifiedProduct.product?.requires_refrigeration ? 'Yes' : 'No' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="generate-button-container">
+            <button class="generate-button" (click)="onGenerate()" *ngIf="identifiedProduct && uploadProgress === 100">Generate</button>
         </div>
     </div>
 </div>

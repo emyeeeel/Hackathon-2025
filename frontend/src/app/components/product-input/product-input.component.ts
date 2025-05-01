@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpEventType } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 })
 export class ProductInputComponent {
   @Output() imageSubmitted = new EventEmitter<{ url?: string, file?: File }>();
+  @Input() identifiedProduct: any; // Input property to receive data from parent
   
   showImageOptions = false;
   selectedOption: string | null = null;
@@ -27,7 +28,9 @@ export class ProductInputComponent {
 
   selectImageOption(option: 'url' | 'upload') {
     this.selectedOption = option;
-    this.resetProgress();
+    this.resetProgress(); // Reset progress and related variables
+    this.imageUrl = ''; // Clear the URL input field
+    this.selectedFile = null; // Clear the selected file
   }
 
   submitImageUrl() {
@@ -47,8 +50,12 @@ export class ProductInputComponent {
         clearInterval(interval);
         this.imagePreviewUrl = this.imageUrl; // Set the preview URL
         console.log('URL loading complete');
+        console.log(this.identifiedProduct)
       }
     }, 100); // Simulate loading speed
+
+    console.log('Sending URL to backend:', this.imageUrl);
+    this.imageSubmitted.emit({ url: this.imageUrl }); // Emit the URL
   }
 
   onFileSelected(event: Event) {
@@ -58,6 +65,7 @@ export class ProductInputComponent {
       this.imagePreviewUrl = URL.createObjectURL(this.selectedFile); // Set preview URL for file
       this.imageSubmitted.emit({ file: this.selectedFile });
       this.uploadFile(this.selectedFile);
+
     }
   }
 
@@ -128,8 +136,20 @@ export class ProductInputComponent {
   }
 
   resetProgress() {
+    console.log('Resetting progress...');
     this.uploadProgress = 0;
-    this.urlUploadProgress = 0;
-    this.imagePreviewUrl = null;
+    this.urlUploadProgress = 0; // Reset URL progress
+    this.identifiedProduct = null; // Clear identified product details
+    this.imagePreviewUrl = null; // Clear image preview
+    this.isUploadComplete = false; // Reset upload completion flag
+  }
+
+  onGenerate() {
+    if (!this.identifiedProduct) {
+      alert('No product details available to generate.');
+      return;
+    }
+    console.log('Generate button clicked. Product details:', this.identifiedProduct);
+    // Add your logic for the "Generate" action here
   }
 }
