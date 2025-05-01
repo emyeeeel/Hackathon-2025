@@ -29,4 +29,5 @@ urlpatterns = [
     path('api/boxes/<int:pk>/', views.BoxDetail.as_view(), name='box-detail'),  # Add BoxDetail view
     path('api/packed-boxes/', views.PackedBoxList.as_view(), name='packed-box-list'),  # PackedBoxList view
     path('api/packed-boxes/<int:pk>/', views.PackedBoxDetail.as_view(), name='packed-box-detail'),  # PackedBoxDetail view
+    path("api/box-recommender", views.BoxRecommenderAPIView.as_view(), name="pack-items"),
 ]
