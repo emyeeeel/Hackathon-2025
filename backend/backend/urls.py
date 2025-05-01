@@ -25,4 +25,6 @@ router.register(r'products', views.ProductViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),  # Add 'api/' prefix here
+    path('api/boxes/', views.BoxList.as_view(), name='box-list'),  # Add BoxList view
+    path('api/boxes/<int:pk>/', views.BoxDetail.as_view(), name='box-detail'),  # Add BoxDetail view
 ]

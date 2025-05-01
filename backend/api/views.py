@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 
 # Create your views here.
@@ -5,12 +6,53 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from .models import Box, Product
 from .serializers import BoxSerializer, ProductSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+class BoxList(APIView):
+    """
+    List all Boxs, or create a new Box.
+    """
+    def get(self, request, format=None):
+        Boxs = Box.objects.all()
+        serializer = BoxSerializer(Boxs, many=True)
+        return Response(serializer.data)
 
+    def post(self, request, format=None):
+        serializer = BoxSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class BoxViewSet(ModelViewSet):
-    queryset = Box.objects.all()
-    serializer_class = BoxSerializer
+class BoxDetail(APIView):
+    """
+    Retrieve, update or delete a Box instance.
+    """
+    def get_object(self, pk):
+        try:
+            return Box.objects.get(pk=pk)
+        except Box.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        box = self.get_object(pk)
+        serializer = BoxSerializer(box)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        box = self.get_object(pk)
+        serializer = BoxSerializer(box, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        box = self.get_object(pk)
+        box.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
