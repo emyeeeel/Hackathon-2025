@@ -15,7 +15,7 @@ export class ProductInputComponent {
   @Input() identifiedProduct: any; // Input property to receive data from parent
   
   showImageOptions = false;
-  selectedOption: string | null = null;
+  selectedOption: string | null = 'upload';
   imageUrl: string = '';
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;
@@ -142,14 +142,5 @@ export class ProductInputComponent {
     this.identifiedProduct = null; // Clear identified product details
     this.imagePreviewUrl = null; // Clear image preview
     this.isUploadComplete = false; // Reset upload completion flag
-  }
-
-  onGenerate() {
-    if (!this.identifiedProduct) {
-      alert('No product details available to generate.');
-      return;
-    }
-    console.log('Generate button clicked. Product details:', this.identifiedProduct);
-    // Add your logic for the "Generate" action here
   }
 }

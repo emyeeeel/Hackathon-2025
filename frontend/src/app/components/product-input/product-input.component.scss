@@ -210,34 +210,3 @@ $background-color: #f4f4f4;
   }
 }
 
-.generate-button-container {
-  text-align: center; /* Center the button horizontally */
-  margin-top: 20px; /* Add spacing above the button */
-}
-
-.generate-button {
-  background-color: #1c3f93; /* Primary color */
-  color: #ffffff; /* White text for contrast */
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px; /* Rounded corners */
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-
-  &:hover {
-    background-color: #eb711b; /* Accent color on hover */
-    transform: scale(1.05); /* Slight zoom effect */
-  }
-
-  &:active {
-    background-color: #d9e11c; /* Secondary color on click */
-    transform: scale(0.95); /* Slight shrink effect */
-  }
-
-  &:disabled {
-    background-color: #cccccc; /* Disabled state color */
-    cursor: not-allowed;
-  }
-}

@@ -1,0 +1,276 @@
+// Color Palette
+$primary-color: #19194b;
+$secondary-color: #2a5db0;
+$accent-color: #ff7f38;
+$highlight-color: #e9f44e;
+$text-color: #2d3748;
+$background-color: #f8fafc;
+$surface-color: #ffffff;
+
+// Spacing
+$base-spacing: 1rem;
+$section-spacing: 3rem;
+
+// Breakpoints
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+
+// Mixins
+@mixin card-shadow {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+@mixin smooth-transition($property: all, $duration: 0.2s) {
+  transition: $property $duration ease-in-out;
+}
+
+// Base Styles
+.logistics-dashboard {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: $section-spacing;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: $background-color;
+  min-height: 100vh;
+  box-sizing: border-box;
+  color: $text-color;
+  line-height: 1.6;
+}
+
+// Hero Section
+.hero-input {
+  background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 5%) 100%);
+  border-radius: 1rem;
+  padding: $section-spacing;
+  margin-bottom: $section-spacing;
+  @include card-shadow;
+  position: relative;
+  overflow: hidden;
+  
+  .input-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    
+    .hero-title {
+      color: $surface-color;
+      font-size: 2.25rem;
+      margin-bottom: $base-spacing * 2;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+  }
+}
+
+// Results Section
+.results-section {
+  display: grid;
+  gap: $section-spacing;
+  
+  .row-2 {
+    display: grid;
+    gap: $section-spacing;
+    
+    @media (min-width: $breakpoint-lg) {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+}
+
+// Cards
+.recommendation-card {
+  background: $surface-color;
+  border-radius: 0.75rem;
+  padding: $base-spacing * 1.5;
+  @include card-shadow;
+  @include smooth-transition;
+  border: 1px solid #e2e8f0;
+  
+  h2, h3 {
+    margin-top: 0;
+    margin-bottom: $base-spacing * 1.5;
+    color: $primary-color;
+  }
+}
+
+// Product Details
+.product-card {
+  .specs-grid {
+    display: grid;
+    gap: $base-spacing;
+    
+    @media (min-width: $breakpoint-md) {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .spec-item {
+      padding: $base-spacing;
+      background: lighten($background-color, 2%);
+      border-radius: 0.5rem;
+      
+      label {
+        display: block;
+        font-weight: 500;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+// Packaging Section
+.packaging-card {
+  .ai-packaging {
+    margin-bottom: $section-spacing;
+    padding-bottom: $base-spacing * 1.5;
+    border-bottom: 2px solid #e2e8f0;
+    
+    .packaging-detail {
+      margin-bottom: $base-spacing;
+      
+      .highlight {
+        color: $accent-color;
+        font-weight: 600;
+      }
+    }
+    
+    .generate-button {
+      width: 100%;
+      padding: $base-spacing;
+      background: $accent-color;
+      color: $surface-color;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      @include smooth-transition;
+      
+      &:hover {
+        background: darken($accent-color, 8%);
+      }
+    }
+  }
+}
+
+// Form Elements
+.manual-packaging {
+  .form-grid {
+    display: grid;
+    gap: $base-spacing;
+    
+    @media (min-width: $breakpoint-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-group {
+      margin-bottom: $base-spacing;
+      
+      input, select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 0.5rem;
+        @include smooth-transition;
+        
+        &:focus {
+          border-color: $accent-color;
+          box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
+        }
+      }
+    }
+  }
+  
+  .save-button {
+    background: $secondary-color;
+    color: $surface-color;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    @include smooth-transition;
+    
+    &:hover {
+      background: darken($secondary-color, 8%);
+    }
+  }
+}
+
+// Freight Options
+.freight-card {
+  .freight-options {
+    display: grid;
+    gap: $base-spacing;
+    
+    .freight-option {
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      
+      .option-header {
+        background: $primary-color;
+        color: $surface-color;
+        padding: $base-spacing;
+        font-weight: 500;
+      }
+      
+      .option-details {
+        padding: $base-spacing;
+        background: $surface-color;
+        
+        .detail-item {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.5rem;
+          
+          label {
+            color: #718096;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: $breakpoint-md) {
+  .logistics-dashboard {
+    padding: $base-spacing;
+  }
+  
+  .hero-input {
+    padding: $base-spacing * 2;
+    
+    .hero-title {
+      font-size: 1.75rem;
+    }
+  }
+  
+  .row-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+// Utility Classes
+.error-message {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  &::before {
+    content: "⚠";
+  }
+}
+
+.saved-config {
+  background: rgba($accent-color, 0.05);
+  border-radius: 0.5rem;
+  padding: $base-spacing;
+  margin-top: $base-spacing;
+  
+  h5 {
+    margin-top: 0;
+    margin-bottom: $base-spacing;
+  }
+}

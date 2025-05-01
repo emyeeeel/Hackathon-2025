@@ -1,4 +1,149 @@
-<app-product-input 
-  (imageSubmitted)="processImageInput($event)"
-  [identifiedProduct]="identifiedProduct"
-></app-product-input>
+<div class="logistics-dashboard">
+  <section class="hero-input">
+    <div class="input-container">
+      <h1 class="hero-title">AI Logistics Optimizer</h1>
+      <app-product-input 
+        (imageSubmitted)="processImageInput($event)"
+        [identifiedProduct]="identifiedProduct">
+      </app-product-input>
+    </div>
+  </section>
+
+  <section *ngIf="identifiedProduct" class="results-section">
+    <!-- Row 1: Product Details -->
+    <div class="product-card row-1">
+      <h2>{{ identifiedProduct.name || 'Product' }} Details</h2>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <label>Dimensions (W×H×L): </label>
+          <span>
+            {{ identifiedProduct.width || '--' }}cm × 
+            {{ identifiedProduct.height || '--' }}cm × 
+            {{ identifiedProduct.length || '--' }}cm
+          </span>
+        </div>
+        <div class="spec-item">
+          <label>Total Weight: </label>
+          <span>{{ (identifiedProduct.total_weight || '--') + ' kg' }}</span>
+        </div>
+        <div class="spec-item">
+          <label>Fragility: </label>
+          <span>{{ identifiedProduct.is_fragile ? 'Fragile' : 'Non-fragile' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Packaging + Freight -->
+    <div class="row-2">
+      <!-- Column 1: Packaging -->
+      <div class="recommendation-card packaging-card">
+        <h3>📦 Packaging Configuration</h3>
+        <div class="ai-packaging" *ngIf="packaging?.ai">
+          <div class="recommendation-content">
+            <div class="packaging-detail">
+              <label>AI Recommended Size: </label>
+              <span class="highlight">{{ packaging?.ai?.optimalSize || 'Calculating...' }}</span>
+            </div>
+            <div class="packaging-detail">
+              <label>Material: </label>
+              <span>{{ packaging?.ai?.material || '--' }}</span>
+            </div>
+            <div class="packaging-detail">
+              <label>Protection: </label>
+              <span>{{ packaging?.ai?.requiredPadding || '--' }}</span>
+            </div>
+          </div>
+          <button class="generate-button" 
+                  (click)="generateOptimalPackaging()"
+                  [style.background]="accentColor">
+            ⟳ Generate New AI Proposal
+          </button>
+        </div>
+
+        <div class="manual-packaging">
+          <h4>Custom Packaging Setup</h4>
+          <form [formGroup]="packagingForm" (ngSubmit)="applyManualPackaging()">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Container Dimensions (L×W×H): </label>
+                <input type="text" 
+                       formControlName="containerSize"
+                       placeholder="e.g., 20×15×30">
+                <div *ngIf="packagingForm.get('containerSize')?.errors?.['pattern']" 
+                     class="error-message">
+                  Please use format: Number×Number×Number
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Material Type: </label>
+                <select formControlName="material">
+                  <option value="cardboard">Corrugated Cardboard</option>
+                  <option value="plastic">Plastic Container</option>
+                  <option value="wood">Wooden Crate</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Padding Level: </label>
+                <select formControlName="padding">
+                  <option value="none">None</option>
+                  <option value="basic">Basic Foam (5mm)</option>
+                  <option value="premium">Bubble Wrap (15mm)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" 
+                      class="save-button"
+                      [disabled]="!packagingForm.valid"
+                      [style.background]="secondaryColor">
+                💾 Save Custom Packaging
+              </button>
+            </div>
+          </form>
+
+          <div *ngIf="packaging?.manual" class="saved-config">
+            <h5>Active Custom Configuration:</h5>
+            <div class="packaging-detail">
+              <label>Dimensions: </label>
+              <span>{{ packaging?.manual?.containerSize || '--' }}</span>
+            </div>
+            <div class="packaging-detail">
+              <label>Material: </label>
+              <span>{{ packaging?.manual?.material || '--' }}</span>
+            </div>
+            <div class="packaging-detail">
+              <label>Padding: </label>
+              <span>{{ packaging?.manual?.padding || '--' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Freight -->
+      <div class="recommendation-card freight-card">
+        <h3>🚚 Shipping Options</h3>
+        <div class="freight-options">
+          <div *ngFor="let option of freightOptions" class="freight-option">
+            <div class="option-header" [style.backgroundColor]="primaryColor">
+              <span>{{ option.type }}</span>
+            </div>
+            <div class="option-details">
+              <div class="detail-item">
+                <label>Cost: </label>
+                <span>{{ option.costPerKg }}</span>
+              </div>
+              <div class="detail-item">
+                <label>Delivery: </label>
+                <span>{{ option.deliveryTime }}</span>
+              </div>
+              <div class="detail-item">
+                <label>CO₂ Impact: </label>
+                <span>{{ option.co2Impact }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

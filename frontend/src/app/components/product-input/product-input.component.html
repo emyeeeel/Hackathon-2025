@@ -46,19 +46,16 @@
             <div class="product-details" *ngIf="identifiedProduct && urlUploadProgress === 100">
                 <h3>Product Details</h3>
                 <div class="product-card">
-                    <p><strong>Name:</strong> {{ identifiedProduct.product?.name }}</p>
-                    <p><strong>Description:</strong> {{ identifiedProduct.product?.description === '' ? 'N/A' : identifiedProduct.product?.description }}</p>
-                    <p><strong>Category:</strong> {{ identifiedProduct.product?.category }}</p>
-                    <p><strong>Subcategory:</strong> {{ identifiedProduct.product?.subcategory }}</p>
-                    <p><strong>Dimensions:</strong> {{ identifiedProduct.product?.width }} x {{ identifiedProduct.product?.height }} x {{ identifiedProduct.product?.length }} cm</p>
-                    <p><strong>Weight:</strong> {{ identifiedProduct.product?.weight }} kg</p>
-                    <p><strong>Quantity:</strong> {{ identifiedProduct.product?.quantity }}</p>
-                    <p><strong>Fragile:</strong> {{ identifiedProduct.product?.is_fragile ? 'Yes' : 'No' }}</p>
-                    <p><strong>Requires Refrigeration:</strong> {{ identifiedProduct.product?.requires_refrigeration ? 'Yes' : 'No' }}</p>
+                    <p><strong>Name:</strong> {{ identifiedProduct.name }}</p>
+                    <p><strong>Description:</strong> {{ identifiedProduct.description === '' ? 'N/A' : identifiedProduct.description }}</p>
+                    <p><strong>Category:</strong> {{ identifiedProduct.category }}</p>
+                    <p><strong>Subcategory:</strong> {{ identifiedProduct.subcategory }}</p>
+                    <p><strong>Dimensions:</strong> {{ identifiedProduct.width }} x {{ identifiedProduct.height }} x {{ identifiedProduct.length }} cm</p>
+                    <p><strong>Weight:</strong> {{ identifiedProduct.weight }} kg</p>
+                    <p><strong>Quantity:</strong> {{ identifiedProduct.quantity }}</p>
+                    <p><strong>Fragile:</strong> {{ identifiedProduct.is_fragile ? 'Yes' : 'No' }}</p>
+                    <p><strong>Requires Refrigeration:</strong> {{ identifiedProduct.requires_refrigeration ? 'Yes' : 'No' }}</p>
                 </div>
-            </div>
-            <div class="generate-button-container">
-                <button class="generate-button" (click)="onGenerate()" *ngIf="identifiedProduct && urlUploadProgress === 100">Generate</button>
             </div>
         </div>
 
@@ -111,9 +108,6 @@
                     <p><strong>Requires Refrigeration:</strong> {{ identifiedProduct.product?.requires_refrigeration ? 'Yes' : 'No' }}</p>
                 </div>
             </div>
-        </div>
-        <div class="generate-button-container">
-            <button class="generate-button" (click)="onGenerate()" *ngIf="identifiedProduct && uploadProgress === 100">Generate</button>
         </div>
     </div>
 </div>
