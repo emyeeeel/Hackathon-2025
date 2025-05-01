@@ -18,5 +18,5 @@ class BoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = Box
         fields = [
-            'id', 'length', 'width', 'height', 'fill_capacity', 'volume'
+            'id', 'length', 'width', 'height', 'weight', 'fill_capacity', 'volume'
         ]

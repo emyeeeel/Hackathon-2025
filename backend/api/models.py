@@ -43,6 +43,7 @@ class Box(models.Model):
     length = models.DecimalField(max_digits=6, decimal_places=2)  # in cm
     width = models.DecimalField(max_digits=6, decimal_places=2)  # in cm
     height = models.DecimalField(max_digits=6, decimal_places=2)  # in cm
+    weight = models.DecimalField(max_digits=6, decimal_places=2)  # in kg
     fill_capacity = models.DecimalField(max_digits=6, decimal_places=2)  # in kg
     volume = models.DecimalField(max_digits=10, decimal_places=2)  # in cm^3
 
