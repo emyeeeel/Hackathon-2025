@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from api import views
+from api.views import DetectProductView
 
 router = DefaultRouter()
 router.register(r'products', views.ProductViewSet)
@@ -25,4 +26,5 @@ router.register(r'products', views.ProductViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),  # Add 'api/' prefix here
+    path('api/detect-product/', DetectProductView.as_view(), name='detect-product'),
 ]
