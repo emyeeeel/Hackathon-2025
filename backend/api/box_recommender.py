@@ -69,21 +69,30 @@ def permute_item_orientations(args):
         qty_results_list.append(qty_result)
         fill_results_list.append(fill_rate)
 
-    return qty_results_list, fill_results_list
+    return qty_results_list, fill_results_list, item_perms
 
 
-def try_container_n(boxes, row: Dict[str, Any]) -> Dict[str, Any]:
+def try_container_n(boxes, item):
+    """
+    Determine fill for item in bin N. This function is called for each item in the list.
+
+    Parameters:
+    row (Dict[str, Any]): JSON object representing the item (with item attributes like length, width, etc.)
+
+    Returns:
+    row (Dict[str, Any]): Original row object, with added container fill results for the given item
+    """
     # Pull out item arguments from the JSON object: item_args = (item_x, item_y, item_z, item_wt, item_vol)
     item_args = (
-        row["length"],   # Item length
-        row["width"],    # Item width
-        row["height"],   # Item height
-        row["weight"],   # Item weight
-        row["volume"],   # Item volume
+        item["length"],   # Item length
+        item["width"],    # Item width
+        item["height"],   # Item height
+        item["weight"],   # Item weight
+        item["volume"],   # Item volume
     )
 
     # List of bins (hardcoded here, but could come from elsewhere)
-    bins_args = boxes  
+    bins_args = boxes  # Assuming 'boxes' is a list of bins like the one in your previous code
     bin_fills = []
 
     # Loop through each bin to calculate item fits
@@ -101,19 +110,24 @@ def try_container_n(boxes, row: Dict[str, Any]) -> Dict[str, Any]:
         args = item_args + bin_args
 
         # Pass combined args to the permute_item_orientations function
-        qty_results_list, fill_results_list = permute_item_orientations(args)
+        qty_results_list, fill_results_list, item_perms = permute_item_orientations(args)
+
+          # Find the best quantity and fill percentage
+        best_qty = max(qty_results_list)  # Assume best quantity is the maximum
+        best_fill_pct = max(fill_results_list)  # Assume best fill percentage is the maximum
 
         # Store the results for the current bin
         single_bin_fill = {
-            "container_id": bin["box_id"],
+            "box_id": bin["name"],
             "qty_results": qty_results_list,
             "fill_pct_results": fill_results_list,
+            "item_perms": item_perms,  # Add item permutations to the dictionary
+            "best_qty": best_qty,  # Add best_qty to the dictionary
+            "best_fill_pct": best_fill_pct,  # Add best_fill_pct to the dictionary
         }
 
         bin_fills.append(single_bin_fill)
 
     # Attach the bin filling results to the original row object
-    row["bin_fills"] = bin_fills
-    return row
-
-
+    item["bin_fills"] = bin_fills
+    return item

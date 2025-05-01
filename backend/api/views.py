@@ -9,6 +9,7 @@ from .serializers import BoxSerializer, PackedBoxSerializer, ProductSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from .box_recommender import try_container_n
 
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
@@ -102,4 +103,19 @@ class PackedBoxDetail(APIView):
         packed_box = self.get_object(pk)
         packed_box.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class BoxRecommenderAPIView(APIView):
+    def post(self, request):
+        products = request.data.get("products", [])
+        boxes = request.data.get("boxes", [])
+
+        if not products or not boxes:
+            return Response(
+                {"error": "Items and boxes must be provided."},
+                status = status.HTTP_400_BAD_REQUEST
+            )
+
+        box_recommendations = [try_container_n(boxes, product) for product in products]
+        return Response(box_recommendations, status=status.HTTP_200_OK)
     
