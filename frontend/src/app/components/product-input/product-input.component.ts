@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -9,8 +9,9 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './product-input.component.html',
   styleUrl: './product-input.component.scss'
 })
-
 export class ProductInputComponent {
+  @Output() imageSubmitted = new EventEmitter<{ url?: string, file?: File }>();
+
   showImageOptions = false;
   selectedOption: 'url' | 'upload' | null = null;
   imageUrl = '';
@@ -35,16 +36,17 @@ export class ProductInputComponent {
   submitImageUrl() {
     if (this.imageUrl) {
       this.imagePreviewUrl = this.imageUrl;
+      this.imageSubmitted.emit({ url: this.imageUrl });
     }
   }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
+    if (input.files?.length) {
       this.selectedFile = input.files[0];
       this.createImagePreview();
+      this.imageSubmitted.emit({ file: this.selectedFile });
     }
-
   }
 
   onDragOver(event: DragEvent) {
@@ -54,7 +56,7 @@ export class ProductInputComponent {
   }
 
   onDragLeave(event: DragEvent) {
-    event.preventDefault
+    event.preventDefault();
     event.stopPropagation();
     this.isDragging = false;
   }
@@ -64,11 +66,12 @@ export class ProductInputComponent {
     event.stopPropagation();
     this.isDragging = false;
     
-    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+    if (event.dataTransfer?.files.length) {
       const file = event.dataTransfer.files[0];
-      if (file.type.match('image.*')) {
+      if (file.type.startsWith('image/')) {
         this.selectedFile = file;
         this.createImagePreview();
+        this.imageSubmitted.emit({ file: this.selectedFile });
       }
     }
   }
@@ -83,17 +86,10 @@ export class ProductInputComponent {
     }
   }
 
-  uploadImage() {
-    if (this.selectedFile) {
-      console.log('Uploading file:', this.selectedFile.name);
-  }
-  }
-
   resetForm() {
     this.selectedOption = null;
     this.imageUrl = '';
     this.selectedFile = null;
     this.imagePreviewUrl = null;
   }
-
 }

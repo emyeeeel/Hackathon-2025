@@ -50,10 +50,8 @@
               >
               <button class="browse-button" (click)="fileInput.click()">Browse Files</button>
             </div>
-
             <div class="selected-file" *ngIf="selectedFile">
               <p>Selected file: {{ selectedFile.name }}</p>
-              <button class="submit-button" (click)="uploadImage()">Upload Image</button>
             </div>
         </div>
     </div>
@@ -62,5 +60,4 @@
         <h3>Image Preview</h3>
         <img [src]="imagePreviewUrl" alt="Image Preview" class="preview-image"/>
     </div>
-
 </div>
