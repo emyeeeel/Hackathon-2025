@@ -14,7 +14,7 @@ def pack_box(args):
     def division_zero(x, y):
         return x // y if y else 0
 
-    item_x, item_y, item_z, item_wt, item_vol, bin_x, bin_y, bin_z, bin_wt, bin_vol = args
+    item_x, item_y, item_z, item_wt, item_vol, item_id, item_name, bin_x, bin_y, bin_z, bin_wt, bin_vol = args
     item_attributes = [item_x, item_y, item_z]
     bin_attributes = [bin_x, bin_y, bin_z]
 
@@ -52,7 +52,7 @@ def pack_box(args):
 
 def permute_item_orientations(args):
     # Unpack args
-    item_x, item_y, item_z, item_wt, item_vol, bin_x, bin_y, bin_z, bin_wt, bin_vol = args
+    item_x, item_y, item_z, item_wt, item_vol,  item_id, item_name, bin_x, bin_y, bin_z, bin_wt, bin_vol = args
     item_attributes = [item_x, item_y, item_z]
     bin_attributes = [bin_x, bin_y, bin_z]
 
@@ -89,6 +89,8 @@ def try_container_n(boxes, item):
         item["height"],   # Item height
         item["weight"],   # Item weight
         item["volume"],   # Item volume
+        item["id"],
+        item["name"],
     )
 
     # List of bins (hardcoded here, but could come from elsewhere)
